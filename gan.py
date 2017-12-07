@@ -78,7 +78,7 @@ class GAN:
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
 
-        for it in range(1000):
+        for it in range(100000):
             X_mb, _ = data.train.next_batch(mb_size)
 
             _, D_loss_curr = self.sess.run([self.D_solver, self.D_loss],
