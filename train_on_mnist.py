@@ -8,6 +8,7 @@ import os
 from kde import KDE
 from gan import GAN
 
+
 def plot(samples):
     fig = plt.figure(figsize=(4, 4))
     gs = gridspec.GridSpec(4, 4)
@@ -25,19 +26,16 @@ def plot(samples):
 
 
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-train_data = mnist.train.images[0:2000,:]
-
+train_data = mnist.train.images[0:2000, :]
 
 # ####TRAIN KDE######
 kde_model = KDE()
 kde_model.train_model(train_data)
 samples = kde_model.generate_sample(16)
 
-
 fig = plot(samples)
 plt.savefig('kde_mnist.png', bbox_inches='tight')
 plt.close(fig)
-
 
 #####TRAIN GAN#######
 gan_model = GAN()
@@ -48,6 +46,3 @@ samples = gan_model.generate_sample(16)
 fig = plot(samples)
 plt.savefig('gan_mnist.png', bbox_inches='tight')
 plt.close(fig)
-
-
-

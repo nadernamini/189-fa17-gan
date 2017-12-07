@@ -6,39 +6,31 @@ import matplotlib.gridspec as gridspec
 import os
 
 
+class GAN:
 
-class GAN():
-
-    def __init__(self,input_size = 784, random_size = 100):
+    def __init__(self, input_size=784, random_size=100):
 
         self.input_size = input_size
         self.random_size = random_size
 
-
-    def xavier_init(self,size):
+    def xavier_init(self, size):
         in_dim = size[0]
         xavier_stddev = 1. / tf.sqrt(in_dim / 2.)
         return tf.random_normal(shape=size, stddev=xavier_stddev)
 
-
-    def sample_Z(self,m, n):
+    def sample_Z(self, m, n):
         return np.random.uniform(-1., 1., size=[m, n])
 
-
-    def generator(self,z):
+    def generator(self, z):
         ###IMPLEMENT THE GENERATOR USING THE G_ VARIABLES#####
 
         return self.G_prob
 
-
-    def discriminator(self,x):
+    def discriminator(self, x):
 
         ###IMPLEMENT THE DISCRIMENATOTR USING THE D_ VARIABLES#####
-        
 
         return D_prob, D_logit
-
-
 
     def init_training(self):
 
@@ -52,12 +44,9 @@ class GAN():
         self.G_W2 = tf.Variable(self.xavier_init([128, self.input_size]))
         self.G_b2 = tf.Variable(tf.zeros(shape=[self.input_size]))
 
-
-
-
         self.theta_G = [self.G_W1, self.G_W2, self.G_b1, self.G_b2]
 
-        self.D_W1 = tf.Variable(self.xavier_init([self.input_size,128]))
+        self.D_W1 = tf.Variable(self.xavier_init([self.input_size, 128]))
         self.D_b1 = tf.Variable(tf.zeros(shape=[128]))
 
         self.D_W2 = tf.Variable(self.xavier_init([128, 1]))
@@ -65,49 +54,43 @@ class GAN():
 
         self.theta_D = [self.D_W1, self.D_W2, self.D_b1, self.D_b2]
 
-
         self.G_sample = self.generator(self.Z)
         D_real, D_logit_real = self.discriminator(self.X)
         D_fake, D_logit_fake = self.discriminator(self.G_sample)
 
-
-    # Implement the loss functions for training a GAN
-    # -------------------
-        self.D_loss = 
-        self.G_loss = 
+        # Implement the loss functions for training a GAN
+        # -------------------
+        self.D_loss =
+        self.G_loss =
 
         self.D_solver = tf.train.AdamOptimizer().minimize(self.D_loss, var_list=self.theta_D)
         self.G_solver = tf.train.AdamOptimizer().minimize(self.G_loss, var_list=self.theta_G)
 
-    def generate_sample(self,num_samples):
+    def generate_sample(self, num_samples):
 
-        ####GENERATE SAMPLES FROM THE GAN############
-       
+    ####GENERATE SAMPLES FROM THE GAN############
 
-    def train_model(self,data):
+    def train_model(self, data):
 
         mb_size = 128
         self.Z_dim = self.random_size
-        
+
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
-        
 
-        
         i = 0
 
         for it in range(100000):
 
-            
             X_mb, _ = data.train.next_batch(mb_size)
-            
 
-            
-            _, D_loss_curr = self.sess.run([self.D_solver, self.D_loss], feed_dict={self.X: X_mb, self.Z: self.sample_Z(mb_size, self.Z_dim)})
-            _, G_loss_curr = self.sess.run([self.G_solver, self.G_loss], feed_dict={self.Z: self.sample_Z(mb_size, self.Z_dim)})
+            _, D_loss_curr = self.sess.run([self.D_solver, self.D_loss],
+                                           feed_dict={self.X: X_mb, self.Z: self.sample_Z(mb_size, self.Z_dim)})
+            _, G_loss_curr = self.sess.run([self.G_solver, self.G_loss],
+                                           feed_dict={self.Z: self.sample_Z(mb_size, self.Z_dim)})
 
             if it % 1000 == 0:
                 print('Iter: {}'.format(it))
-                print('D loss: {:.4}'. format(D_loss_curr))
+                print('D loss: {:.4}'.format(D_loss_curr))
                 print('G_loss: {:.4}'.format(G_loss_curr))
                 print()

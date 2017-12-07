@@ -7,40 +7,29 @@ from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 
 
+class KDE:
 
-class KDE():
+    def __init__(self, use_pca=True):
 
+        self.use_pca = use_pca
 
-	def __init__(self,use_pca = True):
+    def train_model(self, data, pca=True):
+        # project the 64-dimensional data to a lower dimension
 
-		self.use_pca = use_pca
+        if self.use_pca:
+            self.pca = PCA(n_components=15, whiten=False)
 
+            data = self.pca.fit_transform(data)
 
-	def train_model(self,data,pca=True):
-		# project the 64-dimensional data to a lower dimension
+        # use grid search cross-validation to optimize the bandwidth
+        params = {'bandwidth': np.logspace(-1, 1, 20)}
 
-		if self.use_pca:
-			self.pca = PCA(n_components=15, whiten=False)
-			
-			data = self.pca.fit_transform(data)
+    ###FILL IN KDE FITTING AND GRIDSEARCH OPTIMIZATION
 
-		# use grid search cross-validation to optimize the bandwidth
-		params = {'bandwidth': np.logspace(-1, 1, 20)}
-		
+    def generate_sample(self, K):
+        ###GENERATE SAMPLES FROM KDE
 
-		###FILL IN KDE FITTING AND GRIDSEARCH OPTIMIZATION
+        if self.use_pca:
+            new_data = self.pca.inverse_transform(new_data)
 
-
-		
-
-	def generate_sample(self,K):
-		###GENERATE SAMPLES FROM KDE
-
-		if self.use_pca:
-			new_data = self.pca.inverse_transform(new_data)
-		
-		
-		return new_data
-
-
-
+        return new_data
