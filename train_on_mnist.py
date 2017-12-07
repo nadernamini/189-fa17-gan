@@ -1,12 +1,10 @@
-import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import os
 
 from kde import KDE
-from gan import GAN
+# from gan import GAN
 
 
 def plot(samples):
@@ -37,6 +35,7 @@ fig = plot(samples)
 plt.savefig('kde_mnist.png', bbox_inches='tight')
 plt.close(fig)
 
+"""
 #####TRAIN GAN#######
 gan_model = GAN()
 gan_model.init_training()
@@ -46,3 +45,4 @@ samples = gan_model.generate_sample(16)
 fig = plot(samples)
 plt.savefig('gan_mnist.png', bbox_inches='tight')
 plt.close(fig)
+"""
