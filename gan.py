@@ -3,13 +3,10 @@ from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import os
 
 
 class GAN:
-
     def __init__(self, input_size=784, random_size=100):
-
         self.input_size = input_size
         self.random_size = random_size
 
@@ -22,18 +19,20 @@ class GAN:
         return np.random.uniform(-1., 1., size=[m, n])
 
     def generator(self, z):
-        ###IMPLEMENT THE GENERATOR USING THE G_ VARIABLES#####
-
+        # IMPLEMENTED THE GENERATOR USING THE G_ VARIABLES #
+        G_h1 = tf.nn.relu(tf.matmul(z, self.G_W1) + self.G_b1)
+        G_lprob = tf.matmul(G_h1, self.G_W2) + self.G_b2
+        self.G_prob = tf.nn.sigmoid(G_lprob)
         return self.G_prob
 
     def discriminator(self, x):
-
-        ###IMPLEMENT THE DISCRIMENATOTR USING THE D_ VARIABLES#####
-
+        # IMPLEMENTED THE DISCRIMINATOR USING THE D_ VARIABLES #
+        D_h1 = tf.nn.relu(tf.matmul(x, self.D_W1) + self.D_b1)
+        D_logit = tf.matmul(D_h1, self.D_W2) + self.D_b2
+        D_prob = tf.nn.sigmoid(D_logit)
         return D_prob, D_logit
 
     def init_training(self):
-
         self.X = tf.placeholder(tf.float32, shape=[None, self.input_size])
 
         self.Z = tf.placeholder(tf.float32, shape=[None, self.random_size])
@@ -60,15 +59,16 @@ class GAN:
 
         # Implement the loss functions for training a GAN
         # -------------------
-        self.D_loss =
-        self.G_loss =
+        self.D_loss = -tf.reduce_mean(tf.log(D_real) + tf.log(1.0 - D_fake))
+        self.G_loss = -tf.reduce_mean(tf.log(D_fake))
 
         self.D_solver = tf.train.AdamOptimizer().minimize(self.D_loss, var_list=self.theta_D)
         self.G_solver = tf.train.AdamOptimizer().minimize(self.G_loss, var_list=self.theta_G)
 
     def generate_sample(self, num_samples):
-
-    ####GENERATE SAMPLES FROM THE GAN############
+        # GENERATE SAMPLES FROM THE GAN #
+        samples = self.sess.run(self.G_sample, feed_dict={self.Z: self.sample_Z(num_samples, self.Z_dim)})
+        return samples
 
     def train_model(self, data):
 
@@ -78,17 +78,13 @@ class GAN:
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
 
-        i = 0
-
-        for it in range(100000):
-
+        for it in range(1000):
             X_mb, _ = data.train.next_batch(mb_size)
 
             _, D_loss_curr = self.sess.run([self.D_solver, self.D_loss],
                                            feed_dict={self.X: X_mb, self.Z: self.sample_Z(mb_size, self.Z_dim)})
             _, G_loss_curr = self.sess.run([self.G_solver, self.G_loss],
                                            feed_dict={self.Z: self.sample_Z(mb_size, self.Z_dim)})
-
             if it % 1000 == 0:
                 print('Iter: {}'.format(it))
                 print('D loss: {:.4}'.format(D_loss_curr))

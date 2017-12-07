@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 from kde import KDE
-# from gan import GAN
+from gan import GAN
 
 
 def plot(samples):
@@ -25,8 +25,8 @@ def plot(samples):
 
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 train_data = mnist.train.images[0:2000, :]
-
-# ####TRAIN KDE######
+"""
+# TRAIN KDE #
 kde_model = KDE()
 kde_model.train_model(train_data)
 samples = kde_model.generate_sample(16)
@@ -34,9 +34,9 @@ samples = kde_model.generate_sample(16)
 fig = plot(samples)
 plt.savefig('kde_mnist.png', bbox_inches='tight')
 plt.close(fig)
-
 """
-#####TRAIN GAN#######
+
+# TRAIN GAN #
 gan_model = GAN()
 gan_model.init_training()
 gan_model.train_model(mnist)
@@ -45,4 +45,3 @@ samples = gan_model.generate_sample(16)
 fig = plot(samples)
 plt.savefig('gan_mnist.png', bbox_inches='tight')
 plt.close(fig)
-"""

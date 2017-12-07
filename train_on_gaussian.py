@@ -3,7 +3,6 @@ from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import os
 from dataset import Dataset
 
 from numpy.random import normal
@@ -33,7 +32,7 @@ N_SAMPLES = 1000
 train_data = normal(size=(1, N_SAMPLES))
 train_data = train_data.T
 
-####TRAIN KDE####v##
+# TRAIN KDE #
 kde_model = KDE(use_pca=False)
 kde_model.train_model(train_data)
 samples = kde_model.generate_sample(N_SAMPLES)
@@ -42,7 +41,7 @@ fig = plot(train_data, samples)
 plt.savefig('gaussian_kde.png', bbox_inches='tight')
 plt.close(fig)
 
-#####TRAIN GAN#######
+# TRAIN GAN #
 gan_model = GAN(input_size=1, random_size=1)
 gan_model.init_training()
 
