@@ -57,7 +57,7 @@ class GAN:
         # Implement the loss functions for training a GAN
         # -------------------
         self.D_loss = -tf.reduce_mean(tf.log(D_real) + tf.log(1.0 - D_fake))
-        self.G_loss = -tf.reduce_mean(tf.log(1.0 - D_fake))
+        self.G_loss = -tf.reduce_mean(tf.log(D_fake))
 
         self.D_solver = tf.train.AdamOptimizer().minimize(self.D_loss, var_list=self.theta_D)
         self.G_solver = tf.train.AdamOptimizer().minimize(self.G_loss, var_list=self.theta_G)
