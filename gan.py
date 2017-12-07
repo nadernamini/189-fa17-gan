@@ -18,8 +18,8 @@ class GAN:
     def generator(self, z):
         # IMPLEMENTED THE GENERATOR USING THE G_ VARIABLES #
         G_h1 = tf.nn.relu(tf.matmul(z, self.G_W1) + self.G_b1)
-        G_lprob = tf.matmul(G_h1, self.G_W2) + self.G_b2
-        self.G_prob = tf.nn.sigmoid(G_lprob)
+        G_log_prob = tf.matmul(G_h1, self.G_W2) + self.G_b2
+        self.G_prob = tf.nn.sigmoid(G_log_prob)
         return self.G_prob
 
     def discriminator(self, x):
@@ -57,7 +57,7 @@ class GAN:
         # Implement the loss functions for training a GAN
         # -------------------
         self.D_loss = -tf.reduce_mean(tf.log(D_real) + tf.log(1.0 - D_fake))
-        self.G_loss = -tf.reduce_mean(tf.log(D_fake))
+        self.G_loss = -tf.reduce_mean(tf.log(1.0 - D_fake))
 
         self.D_solver = tf.train.AdamOptimizer().minimize(self.D_loss, var_list=self.theta_D)
         self.G_solver = tf.train.AdamOptimizer().minimize(self.G_loss, var_list=self.theta_G)
