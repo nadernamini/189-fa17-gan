@@ -1,5 +1,4 @@
 from tensorflow.examples.tutorials.mnist import input_data
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
@@ -25,7 +24,7 @@ def plot(samples):
 
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 train_data = mnist.train.images[0:2000, :]
-"""
+
 # TRAIN KDE #
 kde_model = KDE()
 kde_model.train_model(train_data)
@@ -34,7 +33,7 @@ samples = kde_model.generate_sample(16)
 fig = plot(samples)
 plt.savefig('kde_mnist.png', bbox_inches='tight')
 plt.close(fig)
-"""
+
 
 # TRAIN GAN #
 gan_model = GAN()
